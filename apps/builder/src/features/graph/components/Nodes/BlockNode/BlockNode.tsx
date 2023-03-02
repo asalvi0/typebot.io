@@ -85,6 +85,7 @@ export const BlockNode = ({
     if (block.type === 'start' || !onMouseDown) return
     onMouseDown(position, block)
   }
+
   useDragDistance({
     ref: blockRef,
     onDrag,

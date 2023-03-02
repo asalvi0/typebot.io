@@ -1,5 +1,80 @@
 # Changelog
 
+<a name="2.11.2"></a>
+## 2.11.2 (2023-03-02)
+
+### Changed
+
+- ♿ (js) Use px instead of rem to look good on any website [[cce63df](https://github.com/baptisteArno/typebot.io/commit/cce63dfea307338ff7f954024bd705f76aeb022a)]
+- 🚸 (webhook) Also add atomic deep keys selection [[73f4846](https://github.com/baptisteArno/typebot.io/commit/73f4846e1ba8a0ebf726099527f3de6c73e4bbf0)]
+
+### Fixed
+
+- 🚑 (webhook) Remove get deep keys test sample [[9d96805](https://github.com/baptisteArno/typebot.io/commit/9d96805d84810390586e01b9806ee157d522afb4)]
+- 🐛 (viewer) Fix client side action when in separate group [[a1cf1e8](https://github.com/baptisteArno/typebot.io/commit/a1cf1e89e79855d3788693a801ebc7db23290240)]
+- 🐛 (settings) Fix custom head code not updating [[4968ed4](https://github.com/baptisteArno/typebot.io/commit/4968ed4202fe99031be559bc44f2b3ed6222925f)]
+- 🐛 (condition) Fix contains not working with lists [[506fe00](https://github.com/baptisteArno/typebot.io/commit/506fe003d1c25b3f9b4b0ec4443db4aff7efb668)]
+
+### Miscellaneous
+
+- 📝 Add change password faq [[b2ad91c](https://github.com/baptisteArno/typebot.io/commit/b2ad91c11fff7cc9595eb5e109ebbf1e3e7b87a4)]
+
+
+<a name="2.11.1"></a>
+## 2.11.1 (2023-03-02)
+
+### Changed
+
+- 🚸 (js) Parse script to content to remove useless script tags if any [[cc07389](https://github.com/baptisteArno/typebot.io/commit/cc07389c37e1008dc5041bb22162bfc69fd5eac4)]
+
+### Fixed
+
+- 🐛 (js) Improve session remember behavior [[ba253cf](https://github.com/baptisteArno/typebot.io/commit/ba253cf3e9574ba53ec6d142e87a8ef44da69f10)]
+- 🐛 (editor) Graph connectors still displayed when switching to dynamic buttons [[c172a44](https://github.com/baptisteArno/typebot.io/commit/c172a44566ae6f27710c38286b0b60ea4a7f7e0a)]
+- 🐛 (share) Fix publicId null when publishing [[eebcbb1](https://github.com/baptisteArno/typebot.io/commit/eebcbb10b820a0a5ac8705a28a965d8fcb2243e8)]
+
+
+<a name="2.11.0"></a>
+## 2.11.0 (2023-03-01)
+
+### Added
+
+- 👷‍♂️ Trigger docker deployment on new main tag [[1d1a254](https://github.com/baptisteArno/typebot.io/commit/1d1a25473b47292fcf2653ea95f54f6bfd83fd5b)]
+
+### Changed
+
+- ⚡ (editor) Improve edges responsiveness [[f8f98ad](https://github.com/baptisteArno/typebot.io/commit/f8f98adc1cc4359353339e279b6dedf2d7f6808d)]
+- ♻️ Better phone input props pass [[73ef12d](https://github.com/baptisteArno/typebot.io/commit/73ef12db7209a53b76dcaa91f5da22eaefb1242e)]
+- ♻️ Improve new version popup polling [[2fc78a5](https://github.com/baptisteArno/typebot.io/commit/2fc78a5b7d8c1cbe249dca911e97dae9d1c70a39)]
+- ♿ (viewer) Show error message for incompatible browsers [[edf0ecd](https://github.com/baptisteArno/typebot.io/commit/edf0ecd7125ed028e1b28342d6e693c0012a2fe8)]
+
+### Removed
+
+- 🔥 (viewer) Remove buttons input validation [[186b376](https://github.com/baptisteArno/typebot.io/commit/186b3760389c74b0451fc2430eba23ec9941553a)]
+
+### Fixed
+
+- 🐛 (webhook) Fix deep key parser dropdown [[8672dfe](https://github.com/baptisteArno/typebot.io/commit/8672dfe9d7ffc44b01058d6ef10c58922d182743)]
+- 🐛 (js) Improve bubbles callback reliability [[f6e128b](https://github.com/baptisteArno/typebot.io/commit/f6e128be37fe6b5039da1ae72a48ba34d9ac518e)]
+- 🚑 (editor) Fix block drag when dropping at same spot [[5024c1b](https://github.com/baptisteArno/typebot.io/commit/5024c1b22b3a31d3cc93a314200be3623e10facc)]
+- 🐛 (script) Execute client side actions before first bubbles [[d5b8a43](https://github.com/baptisteArno/typebot.io/commit/d5b8a43d3f78ec25616e018c413f7f5f0cf1862f)]
+- 🐛 (editor) Flush code editor value when closing [[d57fb47](https://github.com/baptisteArno/typebot.io/commit/d57fb4738d08910fae3605c4fea8dd28eda9913e)]
+- 🐛 Attempt to fix load crash on UC Browser [[5dd8755](https://github.com/baptisteArno/typebot.io/commit/5dd87554c32e340a66777adaa3ba29c4e083ec6e)]
+- 🐛 (wordpress) Fix admin critical bug and better lib import [[c889f30](https://github.com/baptisteArno/typebot.io/commit/c889f302f6a19ebcf4322011e1c8e668b7be114e)]
+- 🐛 (webhook) Test response was not updating [[67e1fd2](https://github.com/baptisteArno/typebot.io/commit/67e1fd2e14334c65763983c7e9c72b0922934de1)]
+
+### Miscellaneous
+
+- 📝 Add dynamic buttons section [[caf4086](https://github.com/baptisteArno/typebot.io/commit/caf4086dd827404f53bb229f344794e9bfeb47c3)]
+- 📝 Add API share instructions [[eaf8024](https://github.com/baptisteArno/typebot.io/commit/eaf8024c84ba9a4d9f58a162bebe171e6a8e3fc7)]
+- 🩹 (viewer) Add path where old engine is forced [[680e967](https://github.com/baptisteArno/typebot.io/commit/680e967a8cba838acaa3ea312874475ef3b448b9)]
+- 📝 (embed) Add new script embed instructions [[2b2b1c3](https://github.com/baptisteArno/typebot.io/commit/2b2b1c3d6d197df5b87a795d06e6f509ea162ab6)]
+- 🩹 (billing) Leave the email checkout field empty [[8034cee](https://github.com/baptisteArno/typebot.io/commit/8034ceeede003a571c78a8dc8c4335cf19afa7e1)]
+- 📝 (wordpress) Add litespeed localization issue instruction [[712daf7](https://github.com/baptisteArno/typebot.io/commit/712daf7ab3ab6ab6291975064f7d8b2881586813)]
+- 🛂 (billing) Enable tax id and billing address collection [[2e8f2d8](https://github.com/baptisteArno/typebot.io/commit/2e8f2d81c6f34b1ec32bebb28edbc993a755d734)]
+- 🩹 (sendEmail) Save error first in logs [[761e1c7](https://github.com/baptisteArno/typebot.io/commit/761e1c71844f4cc4a70147984d6155105b24c68b)]
+
+
 <a name="2.10.5"></a>
 ## 2.10.5 (2023-02-23)
 

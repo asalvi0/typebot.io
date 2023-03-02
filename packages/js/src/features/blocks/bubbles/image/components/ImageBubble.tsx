@@ -1,6 +1,6 @@
 import { TypingBubble } from '@/components'
 import type { ImageBubbleContent } from 'models'
-import { createSignal, onMount } from 'solid-js'
+import { createSignal, onCleanup, onMount } from 'solid-js'
 
 type Props = {
   url: ImageBubbleContent['url']
@@ -11,11 +11,14 @@ export const showAnimationDuration = 400
 
 export const mediaLoadingFallbackTimeout = 5000
 
+let typingTimeout: NodeJS.Timeout
+
 export const ImageBubble = (props: Props) => {
   let image: HTMLImageElement | undefined
   const [isTyping, setIsTyping] = createSignal(true)
 
   const onTypingEnd = () => {
+    if (!isTyping()) return
     setIsTyping(false)
     setTimeout(() => {
       props.onTransitionEnd()
@@ -24,15 +27,15 @@ export const ImageBubble = (props: Props) => {
 
   onMount(() => {
     if (!image) return
-    const timeout = setTimeout(() => {
-      setIsTyping(false)
-      onTypingEnd()
-    }, mediaLoadingFallbackTimeout)
+    typingTimeout = setTimeout(onTypingEnd, mediaLoadingFallbackTimeout)
     image.onload = () => {
-      clearTimeout(timeout)
-      setIsTyping(false)
+      clearTimeout(typingTimeout)
       onTypingEnd()
     }
+  })
+
+  onCleanup(() => {
+    if (typingTimeout) clearTimeout(typingTimeout)
   })
 
   return (
@@ -42,8 +45,8 @@ export const ImageBubble = (props: Props) => {
           <div
             class="flex items-center absolute px-4 py-2 rounded-lg bubble-typing z-10 "
             style={{
-              width: isTyping() ? '4rem' : '100%',
-              height: isTyping() ? '2rem' : '100%',
+              width: isTyping() ? '64px' : '100%',
+              height: isTyping() ? '32px' : '100%',
             }}
           >
             {isTyping() ? <TypingBubble /> : null}
@@ -57,8 +60,8 @@ export const ImageBubble = (props: Props) => {
                 (isTyping() ? 'opacity-0' : 'opacity-100')
               }
               style={{
-                'max-height': '32rem',
-                height: isTyping() ? '2rem' : 'auto',
+                'max-height': '512px',
+                height: isTyping() ? '32px' : 'auto',
               }}
               alt="Bubble image"
             />
