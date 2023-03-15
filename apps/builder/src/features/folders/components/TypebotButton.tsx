@@ -1,9 +1,12 @@
 import React from 'react'
 import {
+  Alert,
+  AlertIcon,
   Button,
   Flex,
   IconButton,
   MenuItem,
+  Stack,
   Tag,
   Text,
   useDisclosure,
@@ -15,19 +18,18 @@ import { ConfirmModal } from '@/components/ConfirmModal'
 import { GripIcon } from '@/components/icons'
 import { useTypebotDnd } from '../TypebotDndProvider'
 import { useDebounce } from 'use-debounce'
-import { Plan } from 'db'
-import { useWorkspace } from '@/features/workspace'
+import { Plan } from '@typebot.io/prisma'
+import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useToast } from '@/hooks/useToast'
-import { isMobile } from '@/utils/helpers'
-import {
-  getTypebotQuery,
-  deleteTypebotQuery,
-  importTypebotQuery,
-  TypebotInDashboard,
-} from '@/features/dashboard'
 import { MoreButton } from './MoreButton'
 import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
 import { deletePublishedTypebotQuery } from '@/features/publish/queries/deletePublishedTypebotQuery'
+import { useScopedI18n } from '@/locales'
+import { deleteTypebotQuery } from '@/features/dashboard/queries/deleteTypebotQuery'
+import { getTypebotQuery } from '@/features/dashboard/queries/getTypebotQuery'
+import { importTypebotQuery } from '@/features/dashboard/queries/importTypebotQuery'
+import { TypebotInDashboard } from '@/features/dashboard/types'
+import { isMobile } from '@/helpers/isMobile'
 
 type Props = {
   typebot: TypebotInDashboard
@@ -42,6 +44,7 @@ export const TypebotButton = ({
   onTypebotUpdated,
   onMouseDown,
 }: Props) => {
+  const scopedT = useScopedI18n('folders.typebotButton')
   const router = useRouter()
   const { workspace } = useWorkspace()
   const { draggedTypebot } = useTypebotDnd()
@@ -68,7 +71,6 @@ export const TypebotButton = ({
     const { error } = await deleteTypebotQuery(typebot.id)
     if (error)
       return showToast({
-        title: "Couldn't delete typebot",
         description: error.message,
       })
     onTypebotUpdated()
@@ -78,14 +80,13 @@ export const TypebotButton = ({
     e.stopPropagation()
     const { data } = await getTypebotQuery(typebot.id)
     const typebotToDuplicate = data?.typebot
-    if (!typebotToDuplicate) return { error: new Error('Typebot not found') }
+    if (!typebotToDuplicate) return
     const { data: createdTypebot, error } = await importTypebotQuery(
       data.typebot,
       workspace?.plan ?? Plan.FREE
     )
     if (error)
       return showToast({
-        title: "Couldn't duplicate typebot",
         description: error.message,
       })
     if (createdTypebot) router.push(`/typebots/${createdTypebot?.id}/edit`)
@@ -153,14 +154,18 @@ export const TypebotButton = ({
             pos="absolute"
             top="20px"
             right="20px"
-            aria-label={`Show ${typebot.name} menu`}
+            aria-label={scopedT('showMoreOptions')}
           >
             {typebot.publishedTypebotId && (
-              <MenuItem onClick={handleUnpublishClick}>Unpublish</MenuItem>
+              <MenuItem onClick={handleUnpublishClick}>
+                {scopedT('unpublish')}
+              </MenuItem>
             )}
-            <MenuItem onClick={handleDuplicateClick}>Duplicate</MenuItem>
+            <MenuItem onClick={handleDuplicateClick}>
+              {scopedT('duplicate')}
+            </MenuItem>
             <MenuItem color="red.400" onClick={handleDeleteClick}>
-              Delete
+              {scopedT('delete')}
             </MenuItem>
           </MoreButton>
         </>
@@ -181,12 +186,17 @@ export const TypebotButton = ({
       {!isReadOnly && (
         <ConfirmModal
           message={
-            <Text>
-              Are you sure you want to delete your Typebot &quot;{typebot.name}
-              &quot;.
-              <br />
-              All associated data will be lost.
-            </Text>
+            <Stack spacing="4">
+              <Text>
+                {scopedT('deleteConfirmationMessage', {
+                  typebotName: <strong>{typebot.name}</strong>,
+                })}
+              </Text>
+              <Alert status="warning">
+                <AlertIcon />
+                {scopedT('deleteConfirmationMessageWarning')}
+              </Alert>
+            </Stack>
           }
           confirmButtonLabel="Delete"
           onConfirm={handleDeleteTypebotClick}

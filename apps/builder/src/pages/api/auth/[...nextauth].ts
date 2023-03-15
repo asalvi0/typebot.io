@@ -9,10 +9,11 @@ import prisma from '@/lib/prisma'
 import { Provider } from 'next-auth/providers'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { CustomAdapter } from './adapter'
-import { User } from 'db'
-import { env, getAtPath, isDefined, isNotEmpty } from 'utils'
-import { mockedUser } from '@/features/auth'
-import { getNewUserInvitations } from '@/features/auth/api'
+import { User } from '@typebot.io/prisma'
+import { env, getAtPath, isDefined, isNotEmpty } from '@typebot.io/lib'
+import { sendVerificationRequest } from './sendVerificationRequest'
+import { mockedUser } from '@/features/auth/mockedUser'
+import { getNewUserInvitations } from '@/features/auth/helpers/getNewUserInvitations'
 
 const providers: Provider[] = []
 
@@ -42,6 +43,7 @@ if (isNotEmpty(env('SMTP_FROM')) && process.env.SMTP_AUTH_DISABLED !== 'true')
         },
       },
       from: env('SMTP_FROM'),
+      sendVerificationRequest,
     })
   )
 

@@ -1,9 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { drive } from '@googleapis/drive'
 import { getAuthenticatedGoogleClient } from '@/lib/googleSheets'
-import { badRequest, methodNotAllowed, notAuthenticated } from 'utils/api'
+import {
+  badRequest,
+  methodNotAllowed,
+  notAuthenticated,
+} from '@typebot.io/lib/api'
 import { setUser } from '@sentry/nextjs'
-import { getAuthenticatedUser } from '@/features/auth/api'
+import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)

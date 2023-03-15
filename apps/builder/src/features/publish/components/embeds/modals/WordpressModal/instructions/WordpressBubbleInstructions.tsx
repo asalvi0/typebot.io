@@ -1,6 +1,6 @@
-import { CodeEditor } from '@/components/CodeEditor'
+import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { ExternalLinkIcon } from '@/components/icons'
-import { useTypebot } from '@/features/editor'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import {
   OrderedList,
   ListItem,
@@ -14,6 +14,8 @@ import { useState } from 'react'
 import { BubbleSettings } from '../../../settings/BubbleSettings/BubbleSettings'
 import { parseInitBubbleCode } from '../../../snippetParsers'
 import { parseDefaultBubbleTheme } from '../../Javascript/instructions/JavascriptBubbleInstructions'
+import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
+import { env, getViewerUrl } from '@typebot.io/lib'
 
 type Props = {
   publicId: string
@@ -29,6 +31,9 @@ export const WordpressBubbleInstructions = ({ publicId }: Props) => {
 
   const initCode = parseInitBubbleCode({
     typebot: publicId,
+    apiHost: isCloudProdInstance
+      ? undefined
+      : env('VIEWER_INTERNAL_URL') ?? getViewerUrl(),
     theme: {
       ...theme,
       chatWindow: {

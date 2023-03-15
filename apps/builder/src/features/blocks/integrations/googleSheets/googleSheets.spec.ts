@@ -1,5 +1,5 @@
 import test, { expect, Page } from '@playwright/test'
-import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
+import { importTypebotInDatabase } from '@typebot.io/lib/playwright/databaseActions'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
 
@@ -136,7 +136,9 @@ test.describe.parallel('Google sheets integration', () => {
       .press('Enter')
     await expect(
       page.locator('typebot-standard').locator('text=Your name is:')
-    ).toHaveText(/John|Fred|Georges/)
+    ).toHaveText(
+      `Your name is: ["Georges","John","Fred","Georges","Georges"] ["Last name","Smith","Smith"]`
+    )
   })
 })
 

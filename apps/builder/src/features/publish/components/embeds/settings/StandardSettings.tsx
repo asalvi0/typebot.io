@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react'
 import { DropdownList } from '@/components/DropdownList'
 import { useState, useEffect } from 'react'
-import { SwitchWithLabel } from '@/components/SwitchWithLabel'
+import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 
 type Props = {
   onUpdateWindowSettings: (windowSettings: {
@@ -72,7 +72,7 @@ export const StandardSettings = ({
                   w="70px"
                   value={inputValues.widthValue}
                 />
-                <DropdownList<string>
+                <DropdownList
                   items={['px', '%']}
                   onItemSelect={handleWidthTypeSelect}
                   currentItem={inputValues.widthType}
@@ -92,7 +92,7 @@ export const StandardSettings = ({
                   w="70px"
                   value={inputValues.heightValue}
                 />
-                <DropdownList<string>
+                <DropdownList
                   items={['px', '%']}
                   onItemSelect={handleHeightTypeSelect}
                   currentItem={inputValues.heightType}

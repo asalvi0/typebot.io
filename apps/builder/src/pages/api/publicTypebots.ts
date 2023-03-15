@@ -1,9 +1,14 @@
 import prisma from '@/lib/prisma'
-import { InputBlockType, PublicTypebot } from 'models'
+import { InputBlockType, PublicTypebot } from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { canPublishFileInput } from '@/utils/api/dbRules'
-import { badRequest, methodNotAllowed, notAuthenticated } from 'utils/api'
-import { getAuthenticatedUser } from '@/features/auth/api'
+import { canPublishFileInput } from '@/helpers/databaseRules'
+import {
+  badRequest,
+  methodNotAllowed,
+  notAuthenticated,
+} from '@typebot.io/lib/api'
+import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
+import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
@@ -23,10 +28,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         !(await canPublishFileInput({ userId: user.id, workspaceId, res }))
       )
         return
-      const typebot = await prisma.publicTypebot.create({
+      const publicTypebot = await prisma.publicTypebot.create({
         data: { ...data },
+        include: {
+          typebot: { select: { name: true } },
+        },
       })
-      return res.send(typebot)
+      await sendTelemetryEvents([
+        {
+          name: 'Typebot published',
+          userId: user.id,
+          workspaceId,
+          typebotId: publicTypebot.typebotId,
+          data: {
+            isFirstPublish: true,
+            name: publicTypebot.typebot.name,
+          },
+        },
+      ])
+      return res.send(publicTypebot)
     }
     return methodNotAllowed(res)
   } catch (err) {

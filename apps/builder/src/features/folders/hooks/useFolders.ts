@@ -1,8 +1,8 @@
-import { fetcher } from '@/utils/helpers'
-import { DashboardFolder } from 'db'
+import { fetcher } from '@/helpers/fetcher'
+import { DashboardFolder } from '@typebot.io/prisma'
 import { stringify } from 'qs'
 import useSWR from 'swr'
-import { env } from 'utils'
+import { env } from '@typebot.io/lib'
 
 export const useFolders = ({
   parentId,

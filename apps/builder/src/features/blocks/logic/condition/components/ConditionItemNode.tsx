@@ -15,19 +15,19 @@ import {
   useEventListener,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { useTypebot } from '@/features/editor'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import {
   Comparison,
   ConditionItem,
   ComparisonOperators,
   ItemType,
   ItemIndices,
-} from 'models'
+} from '@typebot.io/schemas'
 import React, { useRef } from 'react'
-import { byId, isNotDefined } from 'utils'
+import { byId, isNotDefined } from '@typebot.io/lib'
 import { PlusIcon } from '@/components/icons'
 import { ConditionItemForm } from './ConditionItemForm'
-import { useGraph } from '@/features/graph'
+import { useGraph } from '@/features/graph/providers/GraphProvider'
 import { createId } from '@paralleldrive/cuid2'
 
 type Props = {

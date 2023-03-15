@@ -5,7 +5,7 @@ import {
   PlusIcon,
   LogOutIcon,
 } from '@/components/icons'
-import { PlanTag } from '@/features/billing'
+import { PlanTag } from '@/features/billing/components/PlanTag'
 import { trpc } from '@/lib/trpc'
 import {
   Menu,
@@ -16,7 +16,7 @@ import {
   MenuItem,
   Text,
 } from '@chakra-ui/react'
-import { Workspace } from 'models'
+import { Workspace } from '@typebot.io/schemas'
 
 type Props = {
   currentWorkspace?: Workspace

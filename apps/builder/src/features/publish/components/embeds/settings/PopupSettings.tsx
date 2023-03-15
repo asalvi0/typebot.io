@@ -1,4 +1,4 @@
-import { SmartNumberInput } from '@/components/inputs'
+import { NumberInput } from '@/components/inputs'
 import {
   StackProps,
   Stack,
@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react'
 import { PopupProps } from '@typebot.io/js'
 import { useState, useEffect } from 'react'
-import { isDefined } from 'utils'
+import { isDefined } from '@typebot.io/lib'
 
 type Props = {
   onUpdateSettings: (windowSettings: Pick<PopupProps, 'autoShowDelay'>) => void
@@ -37,7 +37,7 @@ export const PopupSettings = ({ onUpdateSettings, ...props }: Props) => {
         />
         {isEnabled && (
           <>
-            <SmartNumberInput
+            <NumberInput
               label="After"
               size="sm"
               w="70px"

@@ -1,9 +1,9 @@
-import { authenticateUser } from '@/features/auth/api'
+import { authenticateUser } from '@/helpers/authenticateUser'
 import prisma from '@/lib/prisma'
-import { Group, WebhookBlock } from 'models'
+import { Group, WebhookBlock } from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { byId, isWebhookBlock } from 'utils'
-import { methodNotAllowed } from 'utils/api'
+import { byId, isWebhookBlock, parseGroupTitle } from '@typebot.io/lib'
+import { methodNotAllowed } from '@typebot.io/lib/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
@@ -27,7 +27,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         ...emptyWebhookBlocks,
         ...blocks.map((b) => ({
           blockId: b.id,
-          name: `${group.title} > ${b.id}`,
+          name: `${parseGroupTitle(group.title)} > ${b.id}`,
           url: typebot?.webhooks.find(byId(b.webhookId))?.url ?? undefined,
         })),
       ]

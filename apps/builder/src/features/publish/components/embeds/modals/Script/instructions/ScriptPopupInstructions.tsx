@@ -1,9 +1,9 @@
-import { CodeEditor } from '@/components/CodeEditor'
-import { useTypebot } from '@/features/editor'
-import { isCloudProdInstance } from '@/utils/helpers'
+import { CodeEditor } from '@/components/inputs/CodeEditor'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 import { Stack, Text } from '@chakra-ui/react'
 import { useState } from 'react'
-import { env, getViewerUrl } from 'utils'
+import { env, getViewerUrl } from '@typebot.io/lib'
 import { PopupSettings } from '../../../settings/PopupSettings'
 import { parseInitPopupCode } from '../../../snippetParsers'
 import {

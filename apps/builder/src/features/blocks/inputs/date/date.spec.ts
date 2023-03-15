@@ -1,7 +1,7 @@
 import test, { expect } from '@playwright/test'
-import { createTypebots } from 'utils/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
-import { defaultDateInputOptions, InputBlockType } from 'models'
+import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
+import { defaultDateInputOptions, InputBlockType } from '@typebot.io/schemas'
 import { createId } from '@paralleldrive/cuid2'
 
 test.describe('Date input block', () => {
@@ -32,9 +32,9 @@ test.describe('Date input block', () => {
     await page.click(`text=Pick a date...`)
     await page.click('text=Is range?')
     await page.click('text=With time?')
-    await page.fill('#from', 'Previous:')
-    await page.fill('#to', 'After:')
-    await page.fill('#button', 'Go')
+    await page.getByLabel('From label:').fill('Previous:')
+    await page.getByLabel('To label:').fill('After:')
+    await page.getByLabel('Button label:').fill('Go')
 
     await page.click('text=Restart')
     await expect(page.locator(`[data-testid="from-date"]`)).toHaveAttribute(

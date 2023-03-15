@@ -1,12 +1,14 @@
 import { Flex, FormLabel, Stack, Switch, useDisclosure } from '@chakra-ui/react'
-import { useWorkspace } from '@/features/workspace'
-import { Plan } from 'db'
-import { GeneralSettings } from 'models'
+import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
+import { Plan } from '@typebot.io/prisma'
+import { GeneralSettings } from '@typebot.io/schemas'
 import React from 'react'
-import { isDefined } from 'utils'
-import { ChangePlanModal, isFreePlan, LimitReached } from '@/features/billing'
-import { SwitchWithLabel } from '@/components/SwitchWithLabel'
-import { LockTag } from '@/features/billing'
+import { isDefined } from '@typebot.io/lib'
+import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
+import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
+import { LockTag } from '@/features/billing/components/LockTag'
+import { isFreePlan } from '@/features/billing/helpers/isFreePlan'
+import { LimitReached } from '@/features/billing/types'
 
 type Props = {
   generalSettings: GeneralSettings
@@ -44,12 +46,6 @@ export const GeneralSettingsForm = ({
     onGeneralSettingsChange({
       ...generalSettings,
       isHideQueryParamsEnabled,
-    })
-
-  const handleDisableResultsSavingChange = (isResultSavingEnabled: boolean) =>
-    onGeneralSettingsChange({
-      ...generalSettings,
-      isResultSavingEnabled: !isResultSavingEnabled,
     })
 
   return (
@@ -95,16 +91,6 @@ export const GeneralSettingsForm = ({
         initialValue={generalSettings.isHideQueryParamsEnabled ?? true}
         onCheckChange={handleHideQueryParamsChange}
         moreInfoContent="If your URL contains query params, they will be automatically hidden when the bot starts."
-      />
-      <SwitchWithLabel
-        label="Disable responses saving"
-        initialValue={
-          isDefined(generalSettings.isResultSavingEnabled)
-            ? !generalSettings.isResultSavingEnabled
-            : false
-        }
-        onCheckChange={handleDisableResultsSavingChange}
-        moreInfoContent="Prevent responses from being saved on Typebot. Chats limit usage will still be tracked."
       />
     </Stack>
   )

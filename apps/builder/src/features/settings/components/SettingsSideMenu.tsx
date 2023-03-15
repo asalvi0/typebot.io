@@ -9,12 +9,13 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import { ChatIcon, CodeIcon, MoreVerticalIcon } from '@/components/icons'
-import { GeneralSettings, Metadata, TypingEmulation } from 'models'
+import { GeneralSettings, Metadata, TypingEmulation } from '@typebot.io/schemas'
 import React from 'react'
 import { GeneralSettingsForm } from './GeneralSettingsForm'
 import { MetadataForm } from './MetadataForm'
 import { TypingEmulationForm } from './TypingEmulationForm'
-import { headerHeight, useTypebot } from '@/features/editor'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { headerHeight } from '@/features/editor/constants'
 
 export const SettingsSideMenu = () => {
   const { typebot, updateTypebot } = useTypebot()

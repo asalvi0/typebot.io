@@ -7,15 +7,16 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import { ToolIcon, TemplateIcon, DownloadIcon } from '@/components/icons'
-import { Typebot } from 'models'
+import { Typebot } from '@typebot.io/schemas'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { ImportTypebotFromFileButton } from './ImportTypebotFromFileButton'
 import { TemplatesModal } from './TemplatesModal'
-import { useWorkspace } from '@/features/workspace'
-import { useUser } from '@/features/account'
+import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
+import { useUser } from '@/features/account/hooks/useUser'
 import { useToast } from '@/hooks/useToast'
-import { createTypebotQuery, importTypebotQuery } from '@/features/dashboard'
+import { createTypebotQuery } from '@/features/dashboard/queries/createTypebotQuery'
+import { importTypebotQuery } from '@/features/dashboard/queries/importTypebotQuery'
 
 export const CreateNewTypebotButtons = () => {
   const { workspace } = useWorkspace()

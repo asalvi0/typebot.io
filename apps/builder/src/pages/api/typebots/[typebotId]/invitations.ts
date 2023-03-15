@@ -1,16 +1,16 @@
-import { CollaborationType, WorkspaceRole } from 'db'
+import { CollaborationType, WorkspaceRole } from '@typebot.io/prisma'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { canReadTypebots, canWriteTypebots } from '@/utils/api/dbRules'
+import { canReadTypebots, canWriteTypebots } from '@/helpers/databaseRules'
 import {
   badRequest,
   forbidden,
   methodNotAllowed,
   notAuthenticated,
-} from 'utils/api'
-import { getAuthenticatedUser } from '@/features/auth/api'
-import { env } from 'utils'
-import { sendGuestInvitationEmail } from 'emails'
+} from '@typebot.io/lib/api'
+import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
+import { env } from '@typebot.io/lib'
+import { sendGuestInvitationEmail } from '@typebot.io/emails'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)

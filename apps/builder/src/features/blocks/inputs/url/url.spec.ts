@@ -1,7 +1,7 @@
 import test, { expect } from '@playwright/test'
-import { createTypebots } from 'utils/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
-import { defaultUrlInputOptions, InputBlockType } from 'models'
+import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
+import { defaultUrlInputOptions, InputBlockType } from '@typebot.io/schemas'
 import { createId } from '@paralleldrive/cuid2'
 
 test.describe('Url input block', () => {
@@ -30,9 +30,9 @@ test.describe('Url input block', () => {
     ).toBeDisabled()
 
     await page.click(`text=${defaultUrlInputOptions.labels.placeholder}`)
-    await page.fill('#placeholder', 'Your URL...')
+    await page.getByLabel('Placeholder:').fill('Your URL...')
     await expect(page.locator('text=Your URL...')).toBeVisible()
-    await page.fill('#button', 'Go')
+    await page.getByLabel('Button label:').fill('Go')
     await page.fill(
       `input[value="${defaultUrlInputOptions.retryMessageContent}"]`,
       'Try again bro'

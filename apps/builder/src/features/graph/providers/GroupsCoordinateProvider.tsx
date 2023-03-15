@@ -1,4 +1,4 @@
-import { Group } from 'models'
+import { Group } from '@typebot.io/schemas'
 import {
   ReactNode,
   useState,
@@ -7,7 +7,7 @@ import {
   createContext,
   useCallback,
 } from 'react'
-import { GroupsCoordinates, Coordinates } from './GraphProvider'
+import { Coordinates, GroupsCoordinates } from '../types'
 
 const groupsCoordinatesContext = createContext<{
   groupsCoordinates: GroupsCoordinates

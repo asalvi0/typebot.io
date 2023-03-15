@@ -2,14 +2,17 @@ import React from 'react'
 import { HStack, Flex, Button, useDisclosure } from '@chakra-ui/react'
 import { HardDriveIcon, SettingsIcon } from '@/components/icons'
 import { signOut } from 'next-auth/react'
-import { useUser } from '@/features/account'
-import { useWorkspace, WorkspaceDropdown } from '@/features/workspace'
-import { isNotDefined } from 'utils'
+import { useUser } from '@/features/account/hooks/useUser'
+import { isNotDefined } from '@typebot.io/lib'
 import Link from 'next/link'
-import { WorkspaceSettingsModal } from '@/features/workspace'
 import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
+import { useScopedI18n } from '@/locales'
+import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
+import { WorkspaceDropdown } from '@/features/workspace/components/WorkspaceDropdown'
+import { WorkspaceSettingsModal } from '@/features/workspace/components/WorkspaceSettingsModal'
 
 export const DashboardHeader = () => {
+  const scopedT = useScopedI18n('dashboard.header')
   const { user } = useUser()
   const { workspace, switchWorkspace, createWorkspace } = useWorkspace()
 
@@ -52,7 +55,7 @@ export const DashboardHeader = () => {
             onClick={onOpen}
             isLoading={isNotDefined(workspace)}
           >
-            Settings & Members
+            {scopedT('settingsButton.label')}
           </Button>
           <WorkspaceDropdown
             currentWorkspace={workspace}

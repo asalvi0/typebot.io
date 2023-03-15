@@ -1,5 +1,10 @@
 import { TypebotViewer } from 'bot-engine'
-import { AnswerInput, PublicTypebot, Typebot, VariableWithValue } from 'models'
+import {
+  AnswerInput,
+  PublicTypebot,
+  Typebot,
+  VariableWithValue,
+} from '@typebot.io/schemas'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import {
@@ -7,16 +12,17 @@ import {
   isDefined,
   isNotDefined,
   isNotEmpty,
-} from 'utils'
+} from '@typebot.io/lib'
 import { SEO } from './Seo'
 import { ErrorPage } from './ErrorPage'
-import { createResultQuery, updateResultQuery } from '@/features/results'
-import { upsertAnswerQuery } from '@/features/answers'
 import { gtmBodyElement } from '@/lib/google-tag-manager'
 import {
   getExistingResultFromSession,
   setResultInSession,
-} from '@/utils/sessionStorage'
+} from '@/helpers/sessionStorage'
+import { upsertAnswerQuery } from '@/features/answers/queries/upsertAnswerQuery'
+import { createResultQuery } from '@/features/results/queries/createResultQuery'
+import { updateResultQuery } from '@/features/results/queries/updateResultQuery'
 
 export type TypebotPageProps = {
   publishedTypebot: Omit<PublicTypebot, 'createdAt' | 'updatedAt'> & {
@@ -107,8 +113,6 @@ export const TypebotPageV2 = ({
 
   const sendNewVariables =
     (resultId: string) => async (variables: VariableWithValue[]) => {
-      if (publishedTypebot.settings.general.isResultSavingEnabled === false)
-        return
       const { error } = await updateResultQuery(resultId, { variables })
       if (error) setError(error)
     }
@@ -117,10 +121,8 @@ export const TypebotPageV2 = ({
     answer: AnswerInput & { uploadedFiles: boolean }
   ) => {
     if (!resultId) return setError(new Error('Error: result was not created'))
-    if (publishedTypebot.settings.general.isResultSavingEnabled !== false) {
-      const { error } = await upsertAnswerQuery({ ...answer, resultId })
-      if (error) setError(error)
-    }
+    const { error } = await upsertAnswerQuery({ ...answer, resultId })
+    if (error) setError(error)
     if (chatStarted) return
     updateResultQuery(resultId, {
       hasStarted: true,
@@ -128,8 +130,6 @@ export const TypebotPageV2 = ({
   }
 
   const handleCompleted = async () => {
-    if (publishedTypebot.settings.general.isResultSavingEnabled === false)
-      return
     if (!resultId) return setError(new Error('Error: result was not created'))
     const { error } = await updateResultQuery(resultId, { isCompleted: true })
     if (error) setError(error)

@@ -1,5 +1,5 @@
 import { useEventListener } from '@chakra-ui/react'
-import { DraggableBlock, DraggableBlockType, Item } from 'models'
+import { DraggableBlock, DraggableBlockType, Item } from '@typebot.io/schemas'
 import {
   createContext,
   Dispatch,
@@ -11,7 +11,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import { Coordinates } from './GraphProvider'
+import { Coordinates } from '../types'
 
 type NodeElement = {
   id: string

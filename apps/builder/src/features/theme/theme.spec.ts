@@ -1,7 +1,7 @@
 import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
+import { importTypebotInDatabase } from '@typebot.io/lib/playwright/databaseActions'
 
 const hostAvatarUrl =
   'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1760&q=80'
@@ -19,7 +19,7 @@ test.describe.parallel('Theme page', () => {
       await expect(page.locator('button >> text="Go"')).toBeVisible()
 
       // Font
-      await page.fill('input[type="text"]', 'Roboto Slab')
+      await page.getByRole('textbox').fill('Roboto Slab')
       await expect(page.locator('.typebot-container')).toHaveCSS(
         'font-family',
         /"Roboto Slab"/

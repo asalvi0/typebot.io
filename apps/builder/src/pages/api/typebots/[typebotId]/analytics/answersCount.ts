@@ -1,9 +1,9 @@
-import { PublicTypebot } from 'models'
+import { PublicTypebot } from '@typebot.io/schemas'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { methodNotAllowed, notAuthenticated } from 'utils/api'
-import { getAuthenticatedUser } from '@/features/auth/api'
-import { canReadTypebots } from '@/utils/api/dbRules'
+import { methodNotAllowed, notAuthenticated } from '@typebot.io/lib/api'
+import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
+import { canReadTypebots } from '@/helpers/databaseRules'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)

@@ -1,15 +1,9 @@
-import { BlockIndices, ChoiceInputBlock, Variable } from 'models'
+import { BlockIndices, ChoiceInputBlock } from '@typebot.io/schemas'
 import React from 'react'
-import { ItemNodesList } from '@/features/graph/components/Nodes/ItemNode'
-import {
-  HStack,
-  Stack,
-  Tag,
-  Text,
-  useColorModeValue,
-  Wrap,
-} from '@chakra-ui/react'
-import { useTypebot } from '@/features/editor'
+import { Stack, Tag, Text, Wrap } from '@chakra-ui/react'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { SetVariableLabel } from '@/components/SetVariableLabel'
+import { ItemNodesList } from '@/features/graph/components/nodes/item/ItemNodesList'
 
 type Props = {
   block: ChoiceInputBlock
@@ -24,12 +18,6 @@ export const ButtonsBlockNode = ({ block, indices }: Props) => {
 
   return (
     <Stack w="full">
-      {block.options.variableId ? (
-        <CollectVariableLabel
-          variableId={block.options.variableId}
-          variables={typebot?.variables}
-        />
-      ) : null}
       {block.options.dynamicVariableId ? (
         <Wrap spacing={1}>
           <Text>Display</Text>
@@ -41,31 +29,12 @@ export const ButtonsBlockNode = ({ block, indices }: Props) => {
       ) : (
         <ItemNodesList block={block} indices={indices} />
       )}
+      {block.options.variableId ? (
+        <SetVariableLabel
+          variableId={block.options.variableId}
+          variables={typebot?.variables}
+        />
+      ) : null}
     </Stack>
-  )
-}
-
-const CollectVariableLabel = ({
-  variableId,
-  variables,
-}: {
-  variableId: string
-  variables?: Variable[]
-}) => {
-  const textColor = useColorModeValue('gray.600', 'gray.400')
-  const variableName = variables?.find(
-    (variable) => variable.id === variableId
-  )?.name
-
-  if (!variableName) return null
-  return (
-    <HStack fontStyle="italic" spacing={1}>
-      <Text fontSize="sm" color={textColor}>
-        Collects
-      </Text>
-      <Tag bg="orange.400" color="white" size="sm">
-        {variableName}
-      </Tag>
-    </HStack>
   )
 }

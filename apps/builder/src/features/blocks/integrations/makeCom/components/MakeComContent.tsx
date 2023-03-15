@@ -1,29 +1,15 @@
 import { Text } from '@chakra-ui/react'
-import { useTypebot } from '@/features/editor'
-import { defaultWebhookAttributes, MakeComBlock, Webhook } from 'models'
-import { useEffect } from 'react'
-import { byId, isNotDefined } from 'utils'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { MakeComBlock } from '@typebot.io/schemas'
+import { byId, isNotDefined } from '@typebot.io/lib'
 
 type Props = {
   block: MakeComBlock
 }
 
 export const MakeComContent = ({ block }: Props) => {
-  const { webhooks, typebot, updateWebhook } = useTypebot()
+  const { webhooks } = useTypebot()
   const webhook = webhooks.find(byId(block.webhookId))
-
-  useEffect(() => {
-    if (!typebot) return
-    if (!webhook) {
-      const { webhookId } = block
-      const newWebhook = {
-        id: webhookId,
-        ...defaultWebhookAttributes,
-        typebotId: typebot.id,
-      } as Webhook
-      updateWebhook(webhookId, newWebhook)
-    }
-  }, [block, typebot, updateWebhook, webhook])
 
   if (isNotDefined(webhook?.body))
     return <Text color="gray.500">Configure...</Text>

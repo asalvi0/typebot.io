@@ -1,9 +1,9 @@
 import { chakra, useColorModeValue } from '@chakra-ui/react'
 import { Popup } from '@typebot.io/react'
-import { useUser } from '@/features/account'
-import { Typebot } from 'models'
+import { useUser } from '@/features/account/hooks/useUser'
+import { Typebot } from '@typebot.io/schemas'
 import React, { useEffect, useRef, useState } from 'react'
-import { sendRequest } from 'utils'
+import { sendRequest } from '@typebot.io/lib'
 import confetti from 'canvas-confetti'
 import { useToast } from '@/hooks/useToast'
 import { useRouter } from 'next/router'
@@ -16,6 +16,7 @@ export const OnboardingModal = ({ totalTypebots }: Props) => {
     '/bots/onboarding.json',
     '/bots/onboarding-dark.json'
   )
+  const backgroundColor = useColorModeValue('white', '#171923')
   const { user, updateUser } = useUser()
   const [typebot, setTypebot] = useState<Typebot>()
   const confettiCanvaContainer = useRef<HTMLCanvasElement | null>(null)
@@ -101,6 +102,9 @@ export const OnboardingModal = ({ totalTypebots }: Props) => {
           typebot={typebot}
           prefilledVariables={{
             Name: user?.name?.split(' ')[0] ?? undefined,
+          }}
+          theme={{
+            backgroundColor,
           }}
           defaultOpen={isNewUser}
           onAnswer={handleNewAnswer}

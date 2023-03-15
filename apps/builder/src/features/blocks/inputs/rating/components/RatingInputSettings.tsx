@@ -1,20 +1,17 @@
 import { FormLabel, Stack } from '@chakra-ui/react'
 import { DropdownList } from '@/components/DropdownList'
-import { RatingInputOptions, Variable } from 'models'
+import { RatingInputOptions, Variable } from '@typebot.io/schemas'
 import React from 'react'
-import { SwitchWithLabel } from '@/components/SwitchWithLabel'
-import { Input } from '@/components/inputs'
-import { VariableSearchInput } from '@/components/VariableSearchInput'
+import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
+import { TextInput } from '@/components/inputs'
+import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 
-type RatingInputSettingsProps = {
+type Props = {
   options: RatingInputOptions
   onOptionsChange: (options: RatingInputOptions) => void
 }
 
-export const RatingInputSettings = ({
-  options,
-  onOptionsChange,
-}: RatingInputSettingsProps) => {
+export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
   const handleLengthChange = (length: number) =>
     onOptionsChange({ ...options, length })
 
@@ -64,7 +61,7 @@ export const RatingInputSettings = ({
         </FormLabel>
         <DropdownList
           onItemSelect={handleTypeChange}
-          items={['Icons', 'Numbers']}
+          items={['Icons', 'Numbers'] as const}
           currentItem={options.buttonType}
         />
       </Stack>
@@ -77,56 +74,38 @@ export const RatingInputSettings = ({
         />
       )}
       {options.buttonType === 'Icons' && options.customIcon.isEnabled && (
-        <Stack>
-          <FormLabel mb="0" htmlFor="svg">
-            Icon SVG:
-          </FormLabel>
-          <Input
-            id="svg"
-            defaultValue={options.customIcon.svg}
-            onChange={handleIconSvgChange}
-            placeholder="<svg>...</svg>"
-          />
-        </Stack>
+        <TextInput
+          label="Icon SVG:"
+          defaultValue={options.customIcon.svg}
+          onChange={handleIconSvgChange}
+          placeholder="<svg>...</svg>"
+        />
       )}
-      <Stack>
-        <FormLabel mb="0" htmlFor="button">
-          {options.buttonType === 'Icons' ? '1' : '0'} label:
-        </FormLabel>
-        <Input
-          id="button"
-          defaultValue={options.labels.left}
-          onChange={handleLeftLabelChange}
-          placeholder="Not likely at all"
-        />
-      </Stack>
-      <Stack>
-        <FormLabel mb="0" htmlFor="button">
-          {options.length} label:
-        </FormLabel>
-        <Input
-          id="button"
-          defaultValue={options.labels.right}
-          onChange={handleRightLabelChange}
-          placeholder="Extremely likely"
-        />
-      </Stack>
+      <TextInput
+        label={`${options.buttonType === 'Icons' ? '1' : '0'} label:`}
+        defaultValue={options.labels.left}
+        onChange={handleLeftLabelChange}
+        placeholder="Not likely at all"
+      />
+      <TextInput
+        label={`${options.length} label:`}
+        defaultValue={options.labels.right}
+        onChange={handleRightLabelChange}
+        placeholder="Extremely likely"
+      />
       <SwitchWithLabel
         label="One click submit"
         moreInfoContent='If enabled, the answer will be submitted as soon as the user clicks on a rating instead of showing the "Send" button.'
         initialValue={options.isOneClickSubmitEnabled ?? false}
         onCheckChange={handleOneClickSubmitChange}
       />
-      <Stack>
-        <FormLabel mb="0" htmlFor="button">
-          Button label:
-        </FormLabel>
-        <Input
-          id="button"
+      {!options.isOneClickSubmitEnabled && (
+        <TextInput
+          label="Button label:"
           defaultValue={options.labels.button}
           onChange={handleButtonLabelChange}
         />
-      </Stack>
+      )}
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
           Save answer in a variable:

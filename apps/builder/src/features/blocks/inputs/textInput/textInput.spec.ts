@@ -1,7 +1,7 @@
 import test, { expect } from '@playwright/test'
-import { createTypebots } from 'utils/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
-import { defaultTextInputOptions, InputBlockType } from 'models'
+import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
+import { defaultTextInputOptions, InputBlockType } from '@typebot.io/schemas'
 import { createId } from '@paralleldrive/cuid2'
 
 test.describe.parallel('Text input block', () => {
@@ -28,8 +28,8 @@ test.describe.parallel('Text input block', () => {
     await expect(page.getByRole('button', { name: 'Send' })).toBeDisabled()
 
     await page.click(`text=${defaultTextInputOptions.labels.placeholder}`)
-    await page.fill('#placeholder', 'Your name...')
-    await page.fill('#button', 'Go')
+    await page.getByLabel('Placeholder:').fill('Your name...')
+    await page.getByLabel('Button label:').fill('Go')
     await page.click('text=Long text?')
 
     await page.click('text=Restart')

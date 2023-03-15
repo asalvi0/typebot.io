@@ -2,21 +2,22 @@ import {
   PublicTypebot,
   ResultValues,
   SendEmailOptions,
-  SmtpCredentialsData,
-} from 'models'
+  SmtpCredentials,
+} from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTransport, getTestMessageUrl } from 'nodemailer'
-import { isDefined, isEmpty, isNotDefined, omit } from 'utils'
-import { parseAnswers } from 'utils/results'
-import { methodNotAllowed, initMiddleware, decrypt } from 'utils/api'
-import { saveErrorLog, saveSuccessLog } from '@/features/logs/api'
+import { isDefined, isEmpty, isNotDefined, omit } from '@typebot.io/lib'
+import { parseAnswers } from '@typebot.io/lib/results'
+import { methodNotAllowed, initMiddleware, decrypt } from '@typebot.io/lib/api'
 
 import Cors from 'cors'
 import Mail from 'nodemailer/lib/mailer'
-import { DefaultBotNotificationEmail } from 'emails'
+import { DefaultBotNotificationEmail } from '@typebot.io/emails'
 import { render } from '@faire/mjml-react/utils/render'
 import prisma from '@/lib/prisma'
-import { getLinkedTypebotsChildren } from '@/features/blocks/logic/typebotLink/api'
+import { getLinkedTypebotsChildren } from '@/features/blocks/logic/typebotLink/getLinkedTypebotsChildren'
+import { saveErrorLog } from '@/features/logs/saveErrorLog'
+import { saveSuccessLog } from '@/features/logs/saveSuccessLog'
 
 const cors = initMiddleware(Cors())
 
@@ -155,7 +156,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const getEmailInfo = async (
   credentialsId: string
-): Promise<SmtpCredentialsData | undefined> => {
+): Promise<SmtpCredentials['data'] | undefined> => {
   if (credentialsId === 'default')
     return {
       host: defaultTransportOptions.host,
@@ -169,7 +170,7 @@ const getEmailInfo = async (
     where: { id: credentialsId },
   })
   if (!credentials) return
-  return decrypt(credentials.data, credentials.iv) as SmtpCredentialsData
+  return decrypt(credentials.data, credentials.iv) as SmtpCredentials['data']
 }
 
 const getEmailBody = async ({

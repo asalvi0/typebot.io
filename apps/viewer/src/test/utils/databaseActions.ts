@@ -1,13 +1,13 @@
-import { CredentialsType, SmtpCredentialsData } from 'models'
-import { PrismaClient } from 'db'
-import { encrypt } from 'utils/api'
-import { proWorkspaceId } from 'utils/playwright/databaseSetup'
+import { PrismaClient } from '@typebot.io/prisma'
+import { SmtpCredentials } from '@typebot.io/schemas'
+import { encrypt } from '@typebot.io/lib/api'
+import { proWorkspaceId } from '@typebot.io/lib/playwright/databaseSetup'
 
 const prisma = new PrismaClient()
 
 export const createSmtpCredentials = (
   id: string,
-  smtpData: SmtpCredentialsData
+  smtpData: SmtpCredentials['data']
 ) => {
   const { encryptedData, iv } = encrypt(smtpData)
   return prisma.credentials.create({
@@ -16,7 +16,7 @@ export const createSmtpCredentials = (
       data: encryptedData,
       iv,
       name: smtpData.from.email as string,
-      type: CredentialsType.SMTP,
+      type: 'smtp',
       workspaceId: proWorkspaceId,
     },
   })

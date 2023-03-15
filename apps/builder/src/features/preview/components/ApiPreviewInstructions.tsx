@@ -1,4 +1,4 @@
-import { CodeEditor } from '@/components/CodeEditor'
+import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { TextLink } from '@/components/TextLink'
 import { useEditor } from '@/features/editor/providers/EditorProvider'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
@@ -10,7 +10,7 @@ import {
   StackProps,
   Text,
 } from '@chakra-ui/react'
-import { env, getViewerUrl } from 'utils'
+import { env, getViewerUrl } from '@typebot.io/lib'
 
 export const ApiPreviewInstructions = (props: StackProps) => {
   const { typebot } = useTypebot()

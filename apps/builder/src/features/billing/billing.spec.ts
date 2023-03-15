@@ -4,13 +4,13 @@ import {
 } from '@/test/utils/databaseActions'
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import { Plan } from 'db'
+import { Plan } from '@typebot.io/prisma'
 import {
   createTypebots,
   createWorkspaces,
   deleteWorkspaces,
   injectFakeResults,
-} from 'utils/playwright/databaseActions'
+} from '@typebot.io/lib/playwright/databaseActions'
 
 const usageWorkspaceId = createId()
 const usageTypebotId = createId()
@@ -134,6 +134,8 @@ test('plan changes should work', async ({ page }) => {
   await page.click('button >> text="4"')
   await expect(page.locator('text="$73"')).toBeVisible()
   await page.click('button >> text=Upgrade >> nth=0')
+  await page.getByLabel('Company name').fill('Company LLC')
+  await page.getByRole('button', { name: 'Go to checkout' }).click()
   await page.waitForNavigation()
   expect(page.url()).toContain('https://checkout.stripe.com')
   await expect(page.locator('text=$73.00 >> nth=0')).toBeVisible()

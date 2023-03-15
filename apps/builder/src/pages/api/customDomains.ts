@@ -1,14 +1,14 @@
-import { CustomDomain } from 'db'
+import { CustomDomain } from '@typebot.io/prisma'
 import { got, HTTPError } from 'got'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getAuthenticatedUser } from '@/features/auth/api'
+import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 import {
   badRequest,
   forbidden,
   methodNotAllowed,
   notAuthenticated,
-} from 'utils/api'
+} from '@typebot.io/lib/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
@@ -35,6 +35,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       await createDomainOnVercel(data.name)
     } catch (err) {
+      console.log(err)
       if (err instanceof HTTPError && err.response.statusCode !== 409)
         return res.status(err.response.statusCode).send(err.response.body)
     }

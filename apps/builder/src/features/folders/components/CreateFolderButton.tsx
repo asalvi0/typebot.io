@@ -1,18 +1,18 @@
 import { Button, HStack, useDisclosure, Text } from '@chakra-ui/react'
 import { FolderPlusIcon } from '@/components/icons'
-import {
-  LimitReached,
-  ChangePlanModal,
-  LockTag,
-  isFreePlan,
-} from '@/features/billing'
-import { useWorkspace } from '@/features/workspace'
-import { Plan } from 'db'
+import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
+import { Plan } from '@typebot.io/prisma'
 import React from 'react'
+import { useScopedI18n } from '@/locales'
+import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
+import { LockTag } from '@/features/billing/components/LockTag'
+import { isFreePlan } from '@/features/billing/helpers/isFreePlan'
+import { LimitReached } from '@/features/billing/types'
 
 type Props = { isLoading: boolean; onClick: () => void }
 
 export const CreateFolderButton = ({ isLoading, onClick }: Props) => {
+  const scopedT = useScopedI18n('folders.createFolderButton')
   const { workspace } = useWorkspace()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -27,7 +27,7 @@ export const CreateFolderButton = ({ isLoading, onClick }: Props) => {
       isLoading={isLoading}
     >
       <HStack>
-        <Text>Create a folder</Text>
+        <Text>{scopedT('label')}</Text>
         {isFreePlan(workspace) && <LockTag plan={Plan.STARTER} />}
       </HStack>
       <ChangePlanModal

@@ -1,7 +1,7 @@
 import test, { expect } from '@playwright/test'
-import { createTypebots } from 'utils/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
-import { defaultEmailInputOptions, InputBlockType } from 'models'
+import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
+import { defaultEmailInputOptions, InputBlockType } from '@typebot.io/schemas'
 import { createId } from '@paralleldrive/cuid2'
 
 test.describe('Email input block', () => {
@@ -33,7 +33,7 @@ test.describe('Email input block', () => {
       'Your email...'
     )
     await expect(page.locator('text=Your email...')).toBeVisible()
-    await page.fill('#button', 'Go')
+    await page.getByLabel('Button label:').fill('Go')
     await page.fill(
       `input[value="${defaultEmailInputOptions.retryMessageContent}"]`,
       'Try again bro'

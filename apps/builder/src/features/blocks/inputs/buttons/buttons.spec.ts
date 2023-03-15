@@ -2,9 +2,13 @@ import test, { expect } from '@playwright/test'
 import {
   createTypebots,
   importTypebotInDatabase,
-} from 'utils/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
-import { defaultChoiceInputOptions, InputBlockType, ItemType } from 'models'
+} from '@typebot.io/lib/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
+import {
+  defaultChoiceInputOptions,
+  InputBlockType,
+  ItemType,
+} from '@typebot.io/schemas'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
 
@@ -49,10 +53,10 @@ test.describe.parallel('Buttons input block', () => {
 
     await page.click('[data-testid="block2-icon"]')
     await page.click('text=Multiple choice?')
-    await page.fill('#button', 'Go')
+    await page.getByLabel('Button label:').fill('Go')
     await page.getByPlaceholder('Select a variable').nth(1).click()
     await page.getByText('var1').click()
-    await expect(page.getByText('Collectsvar1')).toBeVisible()
+    await expect(page.getByText('Setvar1')).toBeVisible()
     await page.click('[data-testid="block2-icon"]')
 
     await page.locator('text=Item 1').hover()

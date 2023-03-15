@@ -1,9 +1,13 @@
 import prisma from '@/lib/prisma'
-import { defaultWebhookAttributes, Webhook } from 'models'
+import { defaultWebhookAttributes, Webhook } from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getAuthenticatedUser } from '@/features/auth/api'
-import { methodNotAllowed, notAuthenticated, notFound } from 'utils/api'
-import { getTypebot } from '@/features/typebot/api/utils/getTypebot'
+import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
+import {
+  methodNotAllowed,
+  notAuthenticated,
+  notFound,
+} from '@typebot.io/lib/api'
+import { getTypebot } from '@/features/typebot/helpers/getTypebot'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)

@@ -1,8 +1,8 @@
-import { FormLabel, Stack, Text } from '@chakra-ui/react'
-import { CodeEditor } from '@/components/CodeEditor'
+import { Stack, Text } from '@chakra-ui/react'
+import { CodeEditor } from '@/components/inputs/CodeEditor'
 import React from 'react'
-import { Input } from '@/components/inputs'
-import { ScriptOptions } from 'models'
+import { TextInput } from '@/components/inputs'
+import { ScriptOptions } from '@typebot.io/schemas'
 
 type Props = {
   options: ScriptOptions
@@ -17,17 +17,12 @@ export const ScriptSettings = ({ options, onOptionsChange }: Props) => {
 
   return (
     <Stack spacing={4}>
-      <Stack>
-        <FormLabel mb="0" htmlFor="name">
-          Name:
-        </FormLabel>
-        <Input
-          id="name"
-          defaultValue={options.name}
-          onChange={handleNameChange}
-          withVariableButton={false}
-        />
-      </Stack>
+      <TextInput
+        label="Name:"
+        defaultValue={options.name}
+        onChange={handleNameChange}
+        withVariableButton={false}
+      />
       <Stack>
         <Text>Code:</Text>
         <CodeEditor

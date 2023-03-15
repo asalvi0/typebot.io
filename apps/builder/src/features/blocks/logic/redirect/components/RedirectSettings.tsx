@@ -1,7 +1,7 @@
-import { Input } from '@/components/inputs'
-import { SwitchWithLabel } from '@/components/SwitchWithLabel'
-import { FormLabel, Stack } from '@chakra-ui/react'
-import { RedirectOptions } from 'models'
+import { TextInput } from '@/components/inputs'
+import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
+import { Stack } from '@chakra-ui/react'
+import { RedirectOptions } from '@typebot.io/schemas'
 import React from 'react'
 
 type Props = {
@@ -17,17 +17,12 @@ export const RedirectSettings = ({ options, onOptionsChange }: Props) => {
 
   return (
     <Stack spacing={4}>
-      <Stack>
-        <FormLabel mb="0" htmlFor="tracking-id">
-          Url:
-        </FormLabel>
-        <Input
-          id="tracking-id"
-          defaultValue={options.url ?? ''}
-          placeholder="Type a URL..."
-          onChange={handleUrlChange}
-        />
-      </Stack>
+      <TextInput
+        label="Url:"
+        defaultValue={options.url ?? ''}
+        placeholder="Type a URL..."
+        onChange={handleUrlChange}
+      />
       <SwitchWithLabel
         label="Open in new tab?"
         initialValue={options.isNewTab}

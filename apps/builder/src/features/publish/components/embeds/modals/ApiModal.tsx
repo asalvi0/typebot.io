@@ -1,5 +1,5 @@
 import { AlertInfo } from '@/components/AlertInfo'
-import { CodeEditor } from '@/components/CodeEditor'
+import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { TextLink } from '@/components/TextLink'
 import {
   Modal,
@@ -16,7 +16,7 @@ import {
   Text,
   Stack,
 } from '@chakra-ui/react'
-import { env, getViewerUrl } from 'utils'
+import { env, getViewerUrl } from '@typebot.io/lib'
 import { ModalProps } from '../EmbedButton'
 
 export const ApiModal = ({

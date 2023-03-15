@@ -1,14 +1,14 @@
-import { CollaborationType, Prisma } from 'db'
+import { CollaborationType, Prisma } from '@typebot.io/prisma'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { methodNotAllowed, notAuthenticated } from 'utils/api'
-import { getAuthenticatedUser } from '@/features/auth/api'
-import { archiveResults } from '@/features/results/api'
-import { Typebot } from 'models'
-import { omit } from 'utils'
-import { getTypebot } from '@/features/typebot/api/utils/getTypebot'
-import { isReadTypebotForbidden } from '@/features/typebot/api/utils/isReadTypebotForbidden'
-import { removeTypebotOldProperties } from '@/features/typebot/api/utils/removeTypebotOldProperties'
+import { methodNotAllowed, notAuthenticated } from '@typebot.io/lib/api'
+import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
+import { Typebot } from '@typebot.io/schemas'
+import { omit } from '@typebot.io/lib'
+import { getTypebot } from '@/features/typebot/helpers/getTypebot'
+import { archiveResults } from '@/features/results/helpers/archiveResults'
+import { isReadTypebotForbidden } from '@/features/typebot/helpers/isReadTypebotForbidden'
+import { removeTypebotOldProperties } from '@/features/typebot/helpers/removeTypebotOldProperties'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
@@ -63,7 +63,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     })
     const typebots = await prisma.typebot.updateMany({
       where: { id: typebotId },
-      data: { isArchived: true, publicId: null },
+      data: { isArchived: true, publicId: null, customDomain: null },
     })
     return res.send({ typebots })
   }
@@ -101,12 +101,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       edges: data.edges ?? [],
     } satisfies Prisma.TypebotUpdateInput
 
-    const updatedTypebot = await prisma.typebot.update({
-      where: { id: typebotId },
-      data: updates,
-    })
-
-    return res.send({ typebot: updatedTypebot })
+    try {
+      const updatedTypebot = await prisma.typebot.update({
+        where: { id: typebotId },
+        data: updates,
+      })
+      return res.send({ typebot: updatedTypebot })
+    } catch (err) {
+      if (err instanceof Prisma.PrismaClientKnownRequestError) {
+        if (err.code === 'P2002') {
+          return res.status(409).send({
+            message:
+              err.meta && 'target' in err.meta && Array.isArray(err.meta.target)
+                ? `${err.meta.target[0]} already exists`
+                : 'Duplicate conflict',
+          })
+        }
+        return res.status(500).send({ message: err.message })
+      }
+    }
   }
 
   if (req.method === 'PATCH') {

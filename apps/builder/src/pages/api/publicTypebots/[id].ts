@@ -1,9 +1,14 @@
 import prisma from '@/lib/prisma'
-import { InputBlockType, PublicTypebot } from 'models'
+import { InputBlockType, PublicTypebot } from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { canPublishFileInput, canWriteTypebots } from '@/utils/api/dbRules'
-import { getAuthenticatedUser } from '@/features/auth/api'
-import { badRequest, methodNotAllowed, notAuthenticated } from 'utils/api'
+import { canPublishFileInput, canWriteTypebots } from '@/helpers/databaseRules'
+import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
+import {
+  badRequest,
+  methodNotAllowed,
+  notAuthenticated,
+} from '@typebot.io/lib/api'
+import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
@@ -25,11 +30,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       !(await canPublishFileInput({ userId: user.id, workspaceId, res }))
     )
       return
-    const typebots = await prisma.publicTypebot.update({
+    const publicTypebot = await prisma.publicTypebot.update({
       where: { id },
       data,
+      include: {
+        typebot: { select: { name: true } },
+      },
     })
-    return res.send({ typebots })
+    await sendTelemetryEvents([
+      {
+        name: 'Typebot published',
+        userId: user.id,
+        workspaceId,
+        typebotId: publicTypebot.typebotId,
+        data: {
+          name: publicTypebot.typebot.name,
+        },
+      },
+    ])
+    return res.send({ typebot: publicTypebot })
   }
   if (req.method === 'DELETE') {
     const publishedTypebotId = req.query.id as string

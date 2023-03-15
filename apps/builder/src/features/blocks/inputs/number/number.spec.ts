@@ -1,7 +1,7 @@
 import test, { expect } from '@playwright/test'
-import { createTypebots } from 'utils/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
-import { defaultNumberInputOptions, InputBlockType } from 'models'
+import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
+import { defaultNumberInputOptions, InputBlockType } from '@typebot.io/schemas'
 import { createId } from '@paralleldrive/cuid2'
 
 test.describe('Number input block', () => {
@@ -28,9 +28,9 @@ test.describe('Number input block', () => {
     await expect(page.getByRole('button', { name: 'Send' })).toBeDisabled()
 
     await page.click(`text=${defaultNumberInputOptions.labels.placeholder}`)
-    await page.fill('#placeholder', 'Your number...')
+    await page.getByLabel('Placeholder:').fill('Your number...')
     await expect(page.locator('text=Your number...')).toBeVisible()
-    await page.fill('#button', 'Go')
+    await page.getByLabel('Button label:').fill('Go')
     await page.fill('[role="spinbutton"] >> nth=0', '0')
     await page.fill('[role="spinbutton"] >> nth=1', '100')
     await page.fill('[role="spinbutton"] >> nth=2', '10')

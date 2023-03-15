@@ -1,9 +1,9 @@
-import { Plan } from 'db'
+import { Plan } from '@typebot.io/prisma'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getAuthenticatedUser } from '@/features/auth/api'
+import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 import Stripe from 'stripe'
-import { methodNotAllowed, notAuthenticated } from 'utils/api'
+import { methodNotAllowed, notAuthenticated } from '@typebot.io/lib/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
@@ -36,6 +36,7 @@ const createCheckoutSession = async (userId: string) => {
     mode: 'subscription',
     metadata: {
       claimableCustomPlanId: claimableCustomPlan.id,
+      userId,
     },
     currency: claimableCustomPlan.currency,
     automatic_tax: { enabled: true },

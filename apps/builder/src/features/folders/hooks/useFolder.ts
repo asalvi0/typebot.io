@@ -1,5 +1,5 @@
-import { fetcher } from '@/utils/helpers'
-import { DashboardFolder } from 'db'
+import { fetcher } from '@/helpers/fetcher'
+import { DashboardFolder } from '@typebot.io/prisma'
 import useSWR from 'swr'
 
 export const useFolder = ({

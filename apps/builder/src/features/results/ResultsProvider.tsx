@@ -1,11 +1,11 @@
 import { useToast } from '@/hooks/useToast'
-import { ResultHeaderCell, ResultWithAnswers } from 'models'
+import { ResultHeaderCell, ResultWithAnswers } from '@typebot.io/schemas'
 import { createContext, ReactNode, useContext, useMemo } from 'react'
-import { parseResultHeader } from 'utils/results'
+import { parseResultHeader } from '@typebot.io/lib/results'
 import { useTypebot } from '../editor/providers/TypebotProvider'
 import { useResultsQuery } from './hooks/useResultsQuery'
 import { TableData } from './types'
-import { convertResultsToTableData } from './utils'
+import { convertResultsToTableData } from './helpers/convertResultsToTableData'
 
 const resultsContext = createContext<{
   resultsList: { results: ResultWithAnswers[] }[] | undefined

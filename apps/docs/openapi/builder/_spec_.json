@@ -10,6 +10,334 @@
     }
   ],
   "paths": {
+    "/t/process": {
+      "post": {
+        "operationId": "query.processTelemetryEvent",
+        "description": "Only used for the cloud version of Typebot. It's the way it processes telemetry events and inject it to thrid-party services.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "events": {
+                    "type": "array",
+                    "items": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "userId": {
+                              "type": "string"
+                            },
+                            "workspaceId": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string",
+                              "enum": [
+                                "Workspace created"
+                              ]
+                            },
+                            "data": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string"
+                                },
+                                "plan": {
+                                  "type": "string",
+                                  "enum": [
+                                    "FREE",
+                                    "STARTER",
+                                    "PRO",
+                                    "LIFETIME",
+                                    "OFFERED",
+                                    "CUSTOM",
+                                    "UNLIMITED"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "plan"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "userId",
+                            "workspaceId",
+                            "name",
+                            "data"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "userId": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string",
+                              "enum": [
+                                "User created"
+                              ]
+                            },
+                            "data": {
+                              "type": "object",
+                              "properties": {
+                                "email": {
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "email"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "userId",
+                            "name",
+                            "data"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "userId": {
+                              "type": "string"
+                            },
+                            "workspaceId": {
+                              "type": "string"
+                            },
+                            "typebotId": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string",
+                              "enum": [
+                                "Typebot created"
+                              ]
+                            },
+                            "data": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string"
+                                },
+                                "template": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "name"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "userId",
+                            "workspaceId",
+                            "typebotId",
+                            "name",
+                            "data"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "userId": {
+                              "type": "string"
+                            },
+                            "workspaceId": {
+                              "type": "string"
+                            },
+                            "typebotId": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string",
+                              "enum": [
+                                "Typebot published"
+                              ]
+                            },
+                            "data": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string"
+                                },
+                                "isFirstPublish": {
+                                  "type": "boolean",
+                                  "enum": [
+                                    true
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "name"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "userId",
+                            "workspaceId",
+                            "typebotId",
+                            "name",
+                            "data"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "userId": {
+                              "type": "string"
+                            },
+                            "workspaceId": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string",
+                              "enum": [
+                                "Subscription updated"
+                              ]
+                            },
+                            "data": {
+                              "type": "object",
+                              "properties": {
+                                "plan": {
+                                  "type": "string",
+                                  "enum": [
+                                    "FREE",
+                                    "STARTER",
+                                    "PRO",
+                                    "LIFETIME",
+                                    "OFFERED",
+                                    "CUSTOM",
+                                    "UNLIMITED"
+                                  ]
+                                },
+                                "additionalChatsIndex": {
+                                  "type": "number"
+                                },
+                                "additionalStorageIndex": {
+                                  "type": "number"
+                                }
+                              },
+                              "required": [
+                                "plan",
+                                "additionalChatsIndex",
+                                "additionalStorageIndex"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "userId",
+                            "workspaceId",
+                            "name",
+                            "data"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "userId": {
+                              "type": "string"
+                            },
+                            "workspaceId": {
+                              "type": "string"
+                            },
+                            "typebotId": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string",
+                              "enum": [
+                                "New results collected"
+                              ]
+                            },
+                            "data": {
+                              "type": "object",
+                              "properties": {
+                                "total": {
+                                  "type": "number"
+                                },
+                                "isFirstOfKind": {
+                                  "type": "boolean",
+                                  "enum": [
+                                    true
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "total"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "userId",
+                            "workspaceId",
+                            "typebotId",
+                            "name",
+                            "data"
+                          ],
+                          "additionalProperties": false
+                        }
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "events"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "enum": [
+                        "Events injected"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
     "/workspaces": {
       "get": {
         "operationId": "query.workspace.listWorkspaces",
@@ -711,38 +1039,28 @@
                     "typebots": {
                       "type": "array",
                       "items": {
-                        "allOf": [
-                          {
-                            "type": "object",
-                            "properties": {
-                              "name": {
-                                "type": "string"
-                              },
-                              "icon": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "id": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "name",
-                              "icon",
-                              "id"
-                            ],
-                            "additionalProperties": false
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
                           },
-                          {
-                            "type": "object",
-                            "properties": {
-                              "publishedTypebotId": {
-                                "type": "string"
-                              }
-                            },
-                            "additionalProperties": false
+                          "icon": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "id": {
+                            "type": "string"
+                          },
+                          "publishedTypebotId": {
+                            "type": "string"
                           }
-                        ]
+                        },
+                        "required": [
+                          "name",
+                          "icon",
+                          "id"
+                        ],
+                        "additionalProperties": false
                       }
                     }
                   },
@@ -1122,133 +1440,116 @@
                     "results": {
                       "type": "array",
                       "items": {
-                        "allOf": [
-                          {
-                            "type": "object",
-                            "properties": {
-                              "id": {
-                                "type": "string"
-                              },
-                              "createdAt": {
-                                "type": "string",
-                                "format": "date-time"
-                              },
-                              "updatedAt": {
-                                "type": "string",
-                                "format": "date-time"
-                              },
-                              "typebotId": {
-                                "type": "string"
-                              },
-                              "variables": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "id": {
-                                      "type": "string"
-                                    },
-                                    "name": {
-                                      "type": "string"
-                                    },
-                                    "value": {
-                                      "anyOf": [
-                                        {
-                                          "type": "string"
-                                        },
-                                        {
-                                          "type": "array",
-                                          "items": {
-                                            "type": "string"
-                                          }
-                                        }
-                                      ]
-                                    }
-                                  },
-                                  "required": [
-                                    "id",
-                                    "name",
-                                    "value"
-                                  ],
-                                  "additionalProperties": false
-                                }
-                              },
-                              "isCompleted": {
-                                "type": "boolean"
-                              },
-                              "hasStarted": {
-                                "type": "boolean",
-                                "nullable": true
-                              },
-                              "isArchived": {
-                                "type": "boolean",
-                                "nullable": true
-                              }
-                            },
-                            "required": [
-                              "id",
-                              "createdAt",
-                              "updatedAt",
-                              "typebotId",
-                              "variables",
-                              "isCompleted",
-                              "hasStarted",
-                              "isArchived"
-                            ],
-                            "additionalProperties": false
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
                           },
-                          {
-                            "type": "object",
-                            "properties": {
-                              "answers": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "createdAt": {
-                                      "type": "string",
-                                      "format": "date-time"
-                                    },
-                                    "resultId": {
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "typebotId": {
+                            "type": "string"
+                          },
+                          "variables": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "value": {
+                                  "anyOf": [
+                                    {
                                       "type": "string"
                                     },
-                                    "blockId": {
-                                      "type": "string"
-                                    },
-                                    "groupId": {
-                                      "type": "string"
-                                    },
-                                    "variableId": {
-                                      "type": "string",
-                                      "nullable": true
-                                    },
-                                    "content": {
-                                      "type": "string"
-                                    },
-                                    "storageUsed": {
-                                      "type": "number",
-                                      "nullable": true
+                                    {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      }
                                     }
-                                  },
-                                  "required": [
-                                    "createdAt",
-                                    "resultId",
-                                    "blockId",
-                                    "groupId",
-                                    "variableId",
-                                    "content",
-                                    "storageUsed"
-                                  ],
-                                  "additionalProperties": false
+                                  ]
                                 }
-                              }
-                            },
-                            "required": [
-                              "answers"
-                            ],
-                            "additionalProperties": false
+                              },
+                              "required": [
+                                "id",
+                                "name",
+                                "value"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "isCompleted": {
+                            "type": "boolean"
+                          },
+                          "hasStarted": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "isArchived": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "answers": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "createdAt": {
+                                  "type": "string",
+                                  "format": "date-time"
+                                },
+                                "resultId": {
+                                  "type": "string"
+                                },
+                                "blockId": {
+                                  "type": "string"
+                                },
+                                "groupId": {
+                                  "type": "string"
+                                },
+                                "variableId": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "content": {
+                                  "type": "string"
+                                },
+                                "storageUsed": {
+                                  "type": "number",
+                                  "nullable": true
+                                }
+                              },
+                              "required": [
+                                "createdAt",
+                                "resultId",
+                                "blockId",
+                                "groupId",
+                                "variableId",
+                                "content",
+                                "storageUsed"
+                              ],
+                              "additionalProperties": false
+                            }
                           }
-                        ]
+                        },
+                        "required": [
+                          "id",
+                          "createdAt",
+                          "typebotId",
+                          "variables",
+                          "isCompleted",
+                          "hasStarted",
+                          "isArchived",
+                          "answers"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "nextCursor": {
@@ -1839,6 +2140,12 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "company": {
+                    "type": "string"
+                  },
                   "workspaceId": {
                     "type": "string"
                   },
@@ -1867,9 +2174,27 @@
                   },
                   "additionalStorage": {
                     "type": "number"
+                  },
+                  "vat": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "value"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "required": [
+                  "email",
+                  "company",
                   "workspaceId",
                   "currency",
                   "plan",
@@ -1949,6 +2274,436 @@
                   "required": [
                     "totalChatsUsed",
                     "totalStorageUsed"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/credentials": {
+      "post": {
+        "operationId": "mutation.credentials.createCredentials",
+        "summary": "Create credentials",
+        "tags": [
+          "Credentials"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "credentials": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "live": {
+                                "type": "object",
+                                "properties": {
+                                  "secretKey": {
+                                    "type": "string"
+                                  },
+                                  "publicKey": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "secretKey",
+                                  "publicKey"
+                                ],
+                                "additionalProperties": false
+                              },
+                              "test": {
+                                "type": "object",
+                                "properties": {
+                                  "secretKey": {
+                                    "type": "string"
+                                  },
+                                  "publicKey": {
+                                    "type": "string"
+                                  }
+                                },
+                                "additionalProperties": false
+                              }
+                            },
+                            "required": [
+                              "live",
+                              "test"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "stripe"
+                            ]
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "data",
+                          "type",
+                          "workspaceId",
+                          "name"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "host": {
+                                "type": "string"
+                              },
+                              "username": {
+                                "type": "string"
+                              },
+                              "password": {
+                                "type": "string"
+                              },
+                              "isTlsEnabled": {
+                                "type": "boolean"
+                              },
+                              "port": {
+                                "type": "number"
+                              },
+                              "from": {
+                                "type": "object",
+                                "properties": {
+                                  "email": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  }
+                                },
+                                "additionalProperties": false
+                              }
+                            },
+                            "required": [
+                              "port",
+                              "from"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "smtp"
+                            ]
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "data",
+                          "type",
+                          "workspaceId",
+                          "name"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "refresh_token": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "expiry_date": {
+                                "type": "number",
+                                "nullable": true
+                              },
+                              "access_token": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "token_type": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "id_token": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "scope": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "google sheets"
+                            ]
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "data",
+                          "type",
+                          "workspaceId",
+                          "name"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "apiKey": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "apiKey"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "openai"
+                            ]
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "data",
+                          "type",
+                          "workspaceId",
+                          "name"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "credentials"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "credentialsId": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "credentialsId"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "get": {
+        "operationId": "query.credentials.listCredentials",
+        "summary": "List workspace credentials",
+        "tags": [
+          "Credentials"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "anyOf": [
+                {
+                  "anyOf": [
+                    {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "stripe"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "smtp"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "string",
+                      "enum": [
+                        "google sheets"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "openai"
+                  ]
+                }
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "credentials": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "credentials"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/credentials/:credentialsId": {
+      "delete": {
+        "operationId": "mutation.credentials.deleteCredentials",
+        "summary": "Delete credentials",
+        "tags": [
+          "Credentials"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "credentialsId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "credentialsId": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "credentialsId"
                   ],
                   "additionalProperties": false
                 }

@@ -1,13 +1,19 @@
-import { duplicateWebhookQuery } from '@/features/blocks/integrations/webhook'
 import { createId } from '@paralleldrive/cuid2'
-import { Plan, Prisma } from 'db'
+import { Plan, Prisma } from '@typebot.io/prisma'
 import {
   ChoiceInputBlock,
   ConditionBlock,
   LogicBlockType,
   Typebot,
-} from 'models'
-import { blockHasItems, isDefined, isWebhookBlock, sendRequest } from 'utils'
+} from '@typebot.io/schemas'
+import { JumpBlock } from '@typebot.io/schemas/features/blocks/logic/jump'
+import {
+  blockHasItems,
+  isDefined,
+  isWebhookBlock,
+  sendRequest,
+} from '@typebot.io/lib'
+import { duplicateWebhookQuery } from '@/features/blocks/integrations/webhook/queries/duplicateWebhookQuery'
 
 export const importTypebotQuery = async (typebot: Typebot, userPlan: Plan) => {
   const { typebot: newTypebot, webhookIdsMapping } = duplicateTypebot(
@@ -82,6 +88,14 @@ const duplicateTypebot = (
                 ...s.options,
                 groupId: groupIdsMapping.get(s.options.groupId as string),
               },
+            }
+          if (s.type === LogicBlockType.JUMP)
+            return {
+              ...s,
+              options: {
+                ...s.options,
+                groupId: groupIdsMapping.get(s.options.groupId as string),
+              } satisfies JumpBlock['options'],
             }
           if (blockHasItems(s))
             return {

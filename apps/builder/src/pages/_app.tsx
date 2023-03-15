@@ -6,25 +6,22 @@ import { customTheme } from '@/lib/theme'
 import { useRouterProgressBar } from '@/lib/routerProgressBar'
 import '@/assets/styles/routerProgressBar.css'
 import '@/assets/styles/plate.css'
-import '@/assets/styles/submissionsTable.css'
+import '@/assets/styles/resultsTable.css'
 import '@/assets/styles/custom.css'
-import { UserProvider } from '@/features/account'
-import { TypebotProvider } from '@/features/editor'
+import { UserProvider } from '@/features/account/UserProvider'
 import { useRouter } from 'next/router'
 import { SupportBubble } from '@/components/SupportBubble'
-import { WorkspaceProvider } from '@/features/workspace'
-import { toTitleCase } from 'utils'
-import { Session } from 'next-auth'
-import { Plan } from 'db'
+import { toTitleCase } from '@typebot.io/lib'
+import { Plan } from '@typebot.io/prisma'
 import { trpc } from '@/lib/trpc'
 import { NewVersionPopup } from '@/components/NewVersionPopup'
+import { I18nProvider } from '@/locales'
+import { TypebotProvider } from '@/features/editor/providers/TypebotProvider'
+import { WorkspaceProvider } from '@/features/workspace/WorkspaceProvider'
 
 const { ToastContainer, toast } = createStandaloneToast(customTheme)
 
-const App = ({
-  Component,
-  pageProps: { session, ...pageProps },
-}: AppProps<{ session?: Session }>) => {
+const App = ({ Component, pageProps }: AppProps) => {
   useRouterProgressBar()
   const { query, pathname } = useRouter()
 
@@ -50,19 +47,21 @@ const App = ({
   return (
     <>
       <ToastContainer />
-      <ChakraProvider theme={customTheme}>
-        <SessionProvider session={session}>
-          <UserProvider>
-            <TypebotProvider typebotId={typebotId}>
-              <WorkspaceProvider typebotId={typebotId}>
-                <Component {...pageProps} />
-                <SupportBubble />
-                <NewVersionPopup />
-              </WorkspaceProvider>
-            </TypebotProvider>
-          </UserProvider>
-        </SessionProvider>
-      </ChakraProvider>
+      <I18nProvider locale={pageProps.locale}>
+        <ChakraProvider theme={customTheme}>
+          <SessionProvider session={pageProps.session}>
+            <UserProvider>
+              <TypebotProvider typebotId={typebotId}>
+                <WorkspaceProvider typebotId={typebotId}>
+                  <Component {...pageProps} />
+                  <SupportBubble />
+                  <NewVersionPopup />
+                </WorkspaceProvider>
+              </TypebotProvider>
+            </UserProvider>
+          </SessionProvider>
+        </ChakraProvider>
+      </I18nProvider>
     </>
   )
 }

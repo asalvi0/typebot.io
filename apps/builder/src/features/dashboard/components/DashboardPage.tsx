@@ -1,26 +1,29 @@
 import { Seo } from '@/components/Seo'
-import { useUser } from '@/features/account'
-import { TypebotDndProvider, FolderContent } from '@/features/folders'
-import { useWorkspace } from '@/features/workspace'
-import { trpc } from '@/lib/trpc'
+import { useUser } from '@/features/account/hooks/useUser'
+import {
+  PreCheckoutModal,
+  PreCheckoutModalProps,
+} from '@/features/billing/components/PreCheckoutModal'
+import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
+import { useScopedI18n } from '@/locales'
 import { Stack, VStack, Spinner, Text } from '@chakra-ui/react'
-import { Plan } from 'db'
+import { Plan } from '@typebot.io/prisma'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
-import { guessIfUserIsEuropean } from 'utils/pricing'
+import { guessIfUserIsEuropean } from '@typebot.io/lib/pricing'
 import { DashboardHeader } from './DashboardHeader'
+import { FolderContent } from '@/features/folders/components/FolderContent'
+import { TypebotDndProvider } from '@/features/folders/TypebotDndProvider'
+import { ParentModalProvider } from '@/features/graph/providers/ParentModalProvider'
 
 export const DashboardPage = () => {
+  const scopedT = useScopedI18n('dashboard')
   const [isLoading, setIsLoading] = useState(false)
-  const { query, push } = useRouter()
+  const { query } = useRouter()
   const { user } = useUser()
   const { workspace } = useWorkspace()
-  const { mutate: createCheckoutSession } =
-    trpc.billing.createCheckoutSession.useMutation({
-      onSuccess: (data) => {
-        push(data.checkoutUrl)
-      },
-    })
+  const [preCheckoutPlan, setPreCheckoutPlan] =
+    useState<PreCheckoutModalProps['selectedSubscription']>()
 
   useEffect(() => {
     const { subscribePlan, chats, storage } = query as {
@@ -30,26 +33,34 @@ export const DashboardPage = () => {
     }
     if (workspace && subscribePlan && user && workspace.plan === 'FREE') {
       setIsLoading(true)
-      createCheckoutSession({
+      setPreCheckoutPlan({
         plan: subscribePlan as 'PRO' | 'STARTER',
         workspaceId: workspace.id,
         additionalChats: chats ? parseInt(chats) : 0,
         additionalStorage: storage ? parseInt(storage) : 0,
-        returnUrl: window.location.href,
         currency: guessIfUserIsEuropean() ? 'eur' : 'usd',
-        prefilledEmail: user.email ?? undefined,
       })
     }
-  }, [createCheckoutSession, query, user, workspace])
+  }, [query, user, workspace])
 
   return (
     <Stack minH="100vh">
-      <Seo title={workspace?.name ?? 'My typebots'} />
+      <Seo title={workspace?.name ?? scopedT('title')} />
       <DashboardHeader />
+      {!workspace?.stripeId && (
+        <ParentModalProvider>
+          <PreCheckoutModal
+            selectedSubscription={preCheckoutPlan}
+            existingEmail={user?.email ?? undefined}
+            existingCompany={workspace?.name ?? undefined}
+            onClose={() => setPreCheckoutPlan(undefined)}
+          />
+        </ParentModalProvider>
+      )}
       <TypebotDndProvider>
         {isLoading ? (
           <VStack w="full" justifyContent="center" pt="10" spacing={6}>
-            <Text>You are being redirected...</Text>
+            <Text>{scopedT('redirectionMessage')}</Text>
             <Spinner />
           </VStack>
         ) : (

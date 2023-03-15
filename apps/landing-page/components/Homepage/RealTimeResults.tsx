@@ -1,10 +1,11 @@
 import { Flex, Stack, Heading, Text, Button, VStack } from '@chakra-ui/react'
 import { Standard } from '@typebot.io/react'
 import { ArrowRight } from 'assets/icons/ArrowRight'
-import { PublicTypebot, Typebot } from 'models'
+import { HandDrawnArrow } from 'assets/illustrations/HandDrawnArrow'
+import { PublicTypebot, Typebot } from '@typebot.io/schemas'
 import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
-import { sendRequest } from 'utils'
+import { sendRequest } from '@typebot.io/lib'
 
 const nameBlockId = 'shuUtMDMw9P4iAHbz7B5SqJ'
 const messageBlockId = 'sqvXpT1YXE3Htp6BCPvVGv3'
@@ -32,9 +33,8 @@ export const RealTimeResults = () => {
   }
 
   const handleAnswer = ({ blockId }: { blockId: string }) => {
-    if ([nameBlockId, messageBlockId].includes(blockId)) {
-      refreshIframeContent()
-    }
+    if ([nameBlockId, messageBlockId].includes(blockId))
+      setTimeout(refreshIframeContent, 1000)
   }
 
   return (
@@ -110,6 +110,23 @@ export const RealTimeResults = () => {
               backgroundColor: 'white',
             }}
           />
+          <Flex
+            top="-60px"
+            right="-30px"
+            pos="absolute"
+            display={{ sm: 'none', xl: 'flex' }}
+          >
+            <Text fontFamily="'Indie Flower'" fontSize="2xl">
+              It&apos;s a real Airtable view!
+            </Text>
+            <HandDrawnArrow
+              transform="rotate(30deg)"
+              boxSize="100px"
+              top="15px"
+              right="-60px"
+              pos="absolute"
+            />
+          </Flex>
         </Stack>
       </Stack>
     </Flex>
